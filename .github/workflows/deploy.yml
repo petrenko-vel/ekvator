@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: 'npm'
 
       # 3. Устанавливаем зависимости
@@ -33,8 +33,8 @@ jobs:
       # Ключ "запекается" в JS файл, поэтому на статическом хостинге он доступен
       - name: Build
         run: npm run build
-        env:
-          VITE_YANDEX_MAPS_API_KEY: ${{ secrets.VITE_YANDEX_MAPS_API_KEY }}
+        # env:
+        #   VITE_YANDEX_MAPS_API_KEY: ${{ secrets.VITE_YANDEX_MAPS_API_KEY }}
 
       # 5. Деплоим папку dist на ветку gh-pages
       - name: Deploy

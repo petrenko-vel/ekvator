@@ -13,29 +13,8 @@
 import { createBrowserRouter, RouterProvider as BaseRouterProvider, Navigate } from 'react-router-dom';
 import { useOnboardingStore } from '@/entities/onboarding/model/onboardingStore';
 import { OnboardingPage } from '@/pages/onboarding';
-
-// Lazy imports для остальных страниц — они ещё не созданы,
-// добавим по мере разработки. Пока ставим заглушки.
-// import { DashboardPage } from '@/pages/dashboard/ui/DashboardPage';
-
-// Временная заглушка для dashboard — уберём когда сделаем Фазу 2
-const DashboardStub = () => (
-    <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100dvh',
-        color: 'var(--color-neutral-0)',
-        fontFamily: 'var(--font-primary)',
-        fontSize: 'var(--text-lg)',
-        background: 'var(--color-bg-base)',
-        flexDirection: 'column',
-        gap: '12px',
-    }}>
-        <span style={{ fontSize: '3rem' }}>🎉</span>
-        <span>Dashboard — следующая фаза!</span>
-    </div>
-);
+import { DashboardPage } from '@/pages/dashboard';
+import { GoalsPage } from '@/pages/goals';
 
 // ProtectedRoute — компонент-гард.
 // Оборачивает любой роут, который требует завершённого онбординга.
@@ -72,7 +51,15 @@ const router = createBrowserRouter([
         path: '/dashboard',
         element: (
             <ProtectedRoute>
-                <DashboardStub />
+                <DashboardPage />
+            </ProtectedRoute>
+        ),
+    },
+    {
+        path: '/goals',
+        element: (
+            <ProtectedRoute>
+                <GoalsPage />
             </ProtectedRoute>
         ),
     },
@@ -81,6 +68,6 @@ const router = createBrowserRouter([
         path: '*',
         element: <Navigate to="/" replace />,
     },
-]);
+], { basename: '/ekvator' });
 
 export const RouterProvider = () => <BaseRouterProvider router={router} />;

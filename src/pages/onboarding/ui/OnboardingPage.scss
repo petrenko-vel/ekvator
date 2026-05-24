@@ -74,7 +74,7 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        box-shadow: 0 2px 8px rgba(139, 108, 200, 0.3);
+        box-shadow: 0 2px 8px rgba(128, 200, 108, 0.3);
 
         svg {
             width: 22px;
@@ -195,7 +195,7 @@
         span {
             font-family: var(--font-primary, 'Outfit', sans-serif);
             font-size: 0.875rem;
-            color: #A090B8;
+            color: var(--color-accent);
             white-space: nowrap;
         }
     }

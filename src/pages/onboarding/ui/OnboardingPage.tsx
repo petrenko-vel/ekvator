@@ -4,6 +4,14 @@ import { useOnboardingStore } from '@/entities/onboarding/model/onboardingStore'
 import labiImg from '@/assets/labi.png';
 import './OnboardingPage.scss';
 
+// Иконка конверта для поля email
+const IconEmail = () => (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="5" width="20" height="14" rx="2.5" stroke="white" strokeWidth="2" />
+        <path d="M2 8L12 14L22 8" stroke="white" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+);
+
 const IconUser = () => (
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 11C14.4853 11 16.5 8.98528 16.5 6.5C16.5 4.01472 14.4853 2 12 2C9.51472 2 7.5 4.01472 7.5 6.5C7.5 8.98528 9.51472 11 12 11Z" fill="white" />
@@ -56,13 +64,17 @@ const IconFacebook = () => (
 
 export const OnboardingPage = () => {
     const navigate = useNavigate();
-    const { complete } = useOnboardingStore();
+    const { complete, updateData } = useOnboardingStore();
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
+        if (name.trim()) {
+            updateData({ name: name.trim() });
+        }
         complete();
         navigate('/dashboard', { replace: true });
     };
@@ -78,9 +90,25 @@ export const OnboardingPage = () => {
                 </div>
 
                 <form className="login-page__form" onSubmit={handleLogin}>
+                    {/* Имя пользователя */}
                     <div className="login-page__field">
                         <div className="login-page__field-icon">
                             <IconUser />
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Ваше имя"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                            className="login-page__input"
+                            autoComplete="given-name"
+                        />
+                    </div>
+
+                    {/* Email */}
+                    <div className="login-page__field">
+                        <div className="login-page__field-icon">
+                            <IconEmail />
                         </div>
                         <input
                             type="email"

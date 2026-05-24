@@ -1,0 +1,46 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Клонируем репозиторий
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      # 3. Устанавливаем зависимости
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      # 4. Собираем проект
+      # Секрет передаётся через env — Vite встраивает его в бандл во время сборки
+      # Ключ "запекается" в JS файл, поэтому на статическом хостинге он доступен
+      - name: Build
+        run: npm run build
+        env:
+          VITE_YANDEX_MAPS_API_KEY: ${{ secrets.VITE_YANDEX_MAPS_API_KEY }}
+
+      # 5. Деплоим папку dist на ветку gh-pages
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          # Сохраняем историю деплоев (не force push)
+          force_orphan: false
